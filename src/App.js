@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Form from './components/Form'
+import Drinks from './components/Drinks'
 
 class App extends Component {
   
@@ -20,6 +21,17 @@ class App extends Component {
     this.setState({ drinks: data.drinks })
     console.log(this.state.drinks)
   }
+
+  componentDidMount = () => {
+    const json = localStorage.getItem("drinks")
+    const drinks = JSON.parse(json)
+    this.setState({ drinks })
+  }
+
+  componentDidUpdate = () => {
+    const drinks = JSON.stringify(this.state.drinks)
+    localStorage.setItem("drinks", drinks)
+  }
   
   render() {
     return (
@@ -28,9 +40,7 @@ class App extends Component {
           <h1 className="App-title">Drink Search</h1>
         </header>
         <Form getDrink={ this.getDrink }/>
-        { this.state.drinks.map((drink) => {
-          return <p key={drink.idDrink}>{ drink.strDrink }</p>
-        }) }
+        <Drinks drinks={this.state.drinks} />
       </div>
     );
   }
